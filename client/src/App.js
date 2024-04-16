@@ -1,26 +1,14 @@
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import WeatherDataDisplay from './components/WeatherDataDisplay';
 
 function App() {
-  const [data, setData] = useState(null);
+  const [weatherData, setWeatherData] = useState(null);
+  const[autoRefresh, setAutoRefresh] = useState(true);
 
-  useEffect(() => { const fetchData = async () => { 
-    try { 
-      const response = await fetch('/api/data')
-        .then(res => res.json());
-      console.log(response);
-      setData(response?.weatherData);
-    } catch (error) { 
-      console.error(error);
-    }
-  }; 
-    fetchData(); 
-  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <div> {data ? ( <p>Got data</p> ) : ( <p>Loading data...</p> )} </div>
-      </header>
+        <WeatherDataDisplay weatherData={weatherData} setWeatherData={setWeatherData} autoRefresh={autoRefresh}/>
     </div>
   );
 }
