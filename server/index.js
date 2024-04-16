@@ -69,8 +69,7 @@ app.get('/api/data', async (req, res) => {
             temperature2m: Object.values(hourly?.variables(0)?.valuesArray()),
         }
     };
-    console.log(weatherData);
-    res.json({ message: 'Hello from Express!' });
+    res.json({ weatherData });
   }); 
 
 app.listen(port, () => {
