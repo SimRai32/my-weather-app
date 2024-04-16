@@ -5,7 +5,7 @@ function App() {
   const [data, setData] = useState(null);
 
   useEffect(() => { const fetchData = async () => { 
-    try { 
+    try {
       const response = await fetch('/api/data')
         .then(res => res.json());
       console.log(response);
