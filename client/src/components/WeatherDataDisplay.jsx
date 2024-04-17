@@ -3,7 +3,11 @@ import { Typography } from "@mui/material";
 import { useEffect } from "react";
 
 const WeatherDataDisplay = props => {
-    const { weatherData, autoRefresh, setWeatherData } = props;
+    const {
+        weatherData, 
+        autoRefresh, 
+        setWeatherData
+    } = props;
     const currentTemp = Math.round(weatherData?.current?.temperature2m);
     const currentTime = weatherData?.current?.time;
     const extractedWeatherData = weatherData?.hourly;
