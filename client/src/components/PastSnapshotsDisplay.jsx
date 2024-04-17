@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, Typography } from "@mui/material";
+import "./pastSnapshotsDisplay.css";
 
 const PastSnapshotsDisplay = (props) => {
   const { pastSnapshots } = props;
