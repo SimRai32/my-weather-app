@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Button } from "@mui/material";
 
 const SnapshotButton = (props) => {
-  const { weatherData } = props;
+  const { weatherData, createAlert } = props;
   const [loading, setLoading] = useState(false);
 
   const snapShot = useCallback(async () => {
@@ -16,12 +16,16 @@ const SnapshotButton = (props) => {
           ...weatherData,
         }),
       });
-      console.log(response);
       if (!response.ok) {
-        new Error("Error creating snapshot");
+        const message = "Network response was not okay";
+        createAlert(message, "error");
+      } else {
+        const message = "Saved Snapshot!";
+        createAlert(message, "success");
       }
     } catch (error) {
-      console.error(error);
+      const message = `Error saving snapshot: ${error}`;
+      createAlert(message, "error");
     } finally {
       setLoading(false);
     }

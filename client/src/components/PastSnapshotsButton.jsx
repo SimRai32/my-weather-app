@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Button } from "@mui/material";
 
 const PastSnapshotsButton = (props) => {
-  const { setPastSnapshots, setOpenModal } = props;
+  const { setPastSnapshots, setOpenModal, createAlert } = props;
   const [loading, setLoading] = useState(false);
 
   const fetchSnapshots = useCallback(async () => {
@@ -12,14 +12,16 @@ const PastSnapshotsButton = (props) => {
       const response = await fetch("/api/pastsnapshots").then((res) =>
         res.json()
       );
-      if (!response?.pastFiveSnapshots) {
-        throw new Error("Network response was not okay");
+      if (!response.pastFiveSnapshots) {
+        const message = "Cannot find past snapshots";
+        createAlert(message, "error");
       }
       const snapshotsArray = response?.pastFiveSnapshots;
       setPastSnapshots(snapshotsArray);
       if (snapshotsArray.length) setOpenModal(true);
     } catch (error) {
-      console.error(`Error fetching data: ${error}`);
+      const message = `Error saving snapshot: ${error}`;
+      createAlert(message, "error");
     } finally {
       setLoading(false);
     }

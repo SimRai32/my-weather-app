@@ -3,8 +3,13 @@ import { Typography } from "@mui/material";
 import { useEffect } from "react";
 
 const WeatherDataDisplay = (props) => {
-  const { weatherData, autoRefresh, setWeatherData, setRefreshDataTimer } =
-    props;
+  const {
+    weatherData,
+    autoRefresh,
+    setWeatherData,
+    setRefreshDataTimer,
+    createAlert,
+  } = props;
   const currentTemp = Math.round(weatherData?.current?.temperature2m);
   const currentTime = weatherData?.current?.time;
   const extractedWeatherData = weatherData?.hourly;
@@ -14,13 +19,15 @@ const WeatherDataDisplay = (props) => {
     const fetchData = async () => {
       try {
         const response = await fetch("/api/data").then((res) => res.json());
-        if (!response?.data) {
-          new Error("Error fetching weather data");
+        if (!response?.weatherData) {
+          const message = "Cannot fetch weather data";
+          createAlert(message, "error");
         }
         setWeatherData(response?.weatherData);
         setRefreshDataTimer(60);
       } catch (error) {
-        console.error(error);
+        const message = `Error saving snapshot: ${error}`;
+        createAlert(message, "error");
       }
     };
 
@@ -31,7 +38,7 @@ const WeatherDataDisplay = (props) => {
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [autoRefresh, setWeatherData]);
+  }, [autoRefresh]);
 
   return (
     <>
