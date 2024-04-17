@@ -9,6 +9,7 @@ function App() {
   const [weatherData, setWeatherData] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [refreshDataTimer, setRefreshDataTimer] = useState(60);
+  const [pastSnapshots, setPastSnapshots] = useState([]);
 
   return (
     <div className="App">
