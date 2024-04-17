@@ -80,6 +80,22 @@ app.get("/api/data", async (req, res) => {
   res.json({ weatherData });
 });
 
+app.get("/api/pastsnapshots", async (req, res) => {
+  const pastFiveSnapshots = [];
+  const maxSnapshots =
+    (pastWeatherData.length > 5 ? 5 : pastWeatherData.length) + 1;
+  for (
+    let i = pastWeatherData.length - 1;
+    i > pastWeatherData.length - maxSnapshots;
+    i--
+  ) {
+    const snapshot = pastWeatherData[i];
+    console.log(snapshot);
+    pastFiveSnapshots.push(snapshot);
+  }
+  res.json({ pastFiveSnapshots });
+});
+
 app.post("/snapshot", (req, res) => {
   pastWeatherData.push(req?.body?.current);
   console.log(pastWeatherData);
