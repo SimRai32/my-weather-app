@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import WeatherDataDisplay from "./components/WeatherDataDisplay";
 import AutoRefreshButton from "./components/AutoRefreshButton";
 import RefreshTimer from "./components/RefreshTimer";
+import SnapshotButton from "./components/SnapshotButton";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
@@ -23,6 +24,7 @@ function App() {
         autoRefresh={autoRefresh}
       />
       <div className="buttons">
+        <SnapshotButton weatherData={weatherData} />
         <AutoRefreshButton
           autoRefresh={autoRefresh}
           setAutoRefresh={setAutoRefresh}
