@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { Button } from "@mui/material";
 
 const PastSnapshotsButton = (props) => {
-  const { setPastSnapshots } = props;
+  const { setPastSnapshots, setOpenModal } = props;
   const [loading, setLoading] = useState(false);
 
   const fetchSnapshots = useCallback(async () => {
@@ -15,13 +15,15 @@ const PastSnapshotsButton = (props) => {
       if (!response?.pastFiveSnapshots) {
         throw new Error("Network response was not okay");
       }
-      setPastSnapshots(response?.pastFiveSnapshots);
+      const snapshotsArray = response?.pastFiveSnapshots;
+      setPastSnapshots(snapshotsArray);
+      if (snapshotsArray.length) setOpenModal(true);
     } catch (error) {
       console.error(`Error fetching data: ${error}`);
     } finally {
       setLoading(false);
     }
-  }, [loading, setPastSnapshots]);
+  }, [loading]);
 
   return (
     <Button variant="outlined" onClick={() => fetchSnapshots()}>
