@@ -1,10 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@mui/material";
 
 const PastSnapshotsButton = (props) => {
   const { setPastSnapshots } = props;
+  const [loading, setLoading] = useState(false);
 
   const fetchSnapshots = useCallback(async () => {
+    if (loading) return;
+    setLoading(true);
     try {
       const response = await fetch("/api/pastsnapshots").then((res) =>
         res.json()
@@ -15,8 +18,10 @@ const PastSnapshotsButton = (props) => {
       setPastSnapshots(response?.pastFiveSnapshots);
     } catch (error) {
       console.error(`Error fetching data: ${error}`);
+    } finally {
+      setLoading(false);
     }
-  }, [setPastSnapshots]);
+  }, [loading, setPastSnapshots]);
 
   return (
     <Button variant="outlined" onClick={() => fetchSnapshots()}>

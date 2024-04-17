@@ -1,10 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { Button } from "@mui/material";
 
 const SnapshotButton = (props) => {
   const { weatherData } = props;
+  const [loading, setLoading] = useState(false);
 
   const snapShot = useCallback(async () => {
+    if (loading) return;
+    setLoading(true);
     try {
       const response = await fetch("/snapshot", {
         method: "post",
@@ -19,8 +22,10 @@ const SnapshotButton = (props) => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
-  }, [weatherData]);
+  }, [loading, weatherData]);
 
   return (
     <Button variant="outlined" onClick={() => snapShot()}>
