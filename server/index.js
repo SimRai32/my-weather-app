@@ -80,6 +80,12 @@ app.get("/api/data", async (req, res) => {
   res.json({ weatherData });
 });
 
+app.post("/snapshot", (req, res) => {
+  pastWeatherData.push(req?.body?.current);
+  console.log(pastWeatherData);
+  res.status(201).json({ message: "Snapshot saved" });
+});
+
 app.listen(port, () => {
   console.log(`Server listening on ${port}`);
 });
