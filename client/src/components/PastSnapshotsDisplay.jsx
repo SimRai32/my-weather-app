@@ -12,10 +12,12 @@ const PastSnapshotsDisplay = (props) => {
           <Typography sx={{ fontSize: 14 }} color="text.secondary">
             {snapshot.time}
           </Typography>
-          <Typography sx={{ fontSize: 48 }}>{snapshot.weather}</Typography>
-          <Typography sx={{ fontSize: 28 }}>
-            {Math.round(snapshot.temperature2m)} °C
-          </Typography>
+          <div className="weather-card">
+            <Typography sx={{ fontSize: 48 }}>{snapshot.weather}</Typography>
+            <Typography sx={{ fontSize: 28 }}>
+              {Math.round(snapshot.temperature2m)} °C
+            </Typography>
+          </div>
         </CardContent>
       </Card>
     ));
