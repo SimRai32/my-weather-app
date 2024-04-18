@@ -37,7 +37,7 @@ const WeatherDataDisplay = (props) => {
     }, 60000);
 
     return () => clearInterval(intervalId);
-  }, [autoRefresh]);
+  }, [autoRefresh, createAlert]);
 
   return (
     <>

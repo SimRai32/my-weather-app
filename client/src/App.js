@@ -27,6 +27,12 @@ function App() {
     setOpenModal(false);
   }, []);
 
+  const createAlert = useCallback((message, alertTyping = null) => {
+    setAlertMessage(message);
+    setAlertType(alertTyping);
+    setOpenSnackBar(true);
+  }, []);
+
   useEffect(() => {
     if (!navigator?.geolocation) {
       setAutoRefresh(true);
@@ -45,7 +51,7 @@ function App() {
         },
         (error) => {
           const message = ("Error getting user location:", error);
-          createAlert(message, "error");
+          console.error(message);
         }
       );
     };
@@ -71,7 +77,7 @@ function App() {
     };
 
     getLocation();
-  }, []);
+  }, [createAlert]);
 
   const handleCloseSnackBar = useCallback(() => {
     clearInterval(intervalRef.current);
@@ -80,12 +86,6 @@ function App() {
       setAlertMessage(null);
       setAlertType(null);
     }, 3000);
-  }, []);
-
-  const createAlert = useCallback((message, alertTyping = null) => {
-    setAlertMessage(message);
-    setAlertType(alertTyping);
-    setOpenSnackBar(true);
   }, []);
 
   return (

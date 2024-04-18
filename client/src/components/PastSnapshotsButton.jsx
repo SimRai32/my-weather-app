@@ -21,7 +21,7 @@ const PastSnapshotsButton = (props) => {
     } finally {
       setLoading(false);
     }
-  }, [loading]);
+  }, [loading, createAlert]);
 
   return (
     <Button variant="outlined" onClick={() => fetchSnapshots()}>
