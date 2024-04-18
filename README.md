@@ -1,0 +1,1 @@
+Hi, to get this application working on your computer, start off by cloning the repo. Once you've clone it, run `npm install` in both the root folder and the client. Once that's done just run `npm start` in the root folder and then the client.
