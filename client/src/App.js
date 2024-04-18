@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import WeatherDataDisplay from "./components/WeatherDataDisplay";
 import AutoRefreshButton from "./components/AutoRefreshButton";
 import RefreshTimer from "./components/RefreshTimer";
@@ -10,7 +10,7 @@ import { Modal, Snackbar, Alert } from "@mui/material";
 
 function App() {
   const [weatherData, setWeatherData] = useState(null);
-  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [autoRefresh, setAutoRefresh] = useState(false);
   const [refreshDataTimer, setRefreshDataTimer] = useState(60);
   const [pastSnapshots, setPastSnapshots] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -25,6 +25,52 @@ function App() {
 
   const handleCloseModal = useCallback(() => {
     setOpenModal(false);
+  }, []);
+
+  useEffect(() => {
+    if (!navigator?.geolocation) {
+      setAutoRefresh(true);
+      const message =
+        "Geolocation is not supported by this browser. Here's Vancouver's weather";
+      createAlert(message, "error");
+    }
+
+    const getLocation = () => {
+      const coordinates = {};
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          coordinates["lat"] = position.coords.latitude;
+          coordinates["long"] = position.coords.longitude;
+          sendLocation(coordinates);
+        },
+        (error) => {
+          const message = ("Error getting user location:", error);
+          createAlert(message, "error");
+        }
+      );
+    };
+
+    const sendLocation = async (coordinates) => {
+      try {
+        const response = await fetch("/coordinates", {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...coordinates,
+          }),
+        });
+        if (!response.ok) {
+          const message = "Network response was not okay";
+          createAlert(message, "error");
+        }
+        setAutoRefresh(true);
+      } catch (error) {
+        const message = `Error cannot send location to server: ${error}`;
+        createAlert(message, "error");
+      }
+    };
+
+    getLocation();
   }, []);
 
   const handleCloseSnackBar = useCallback(() => {
@@ -51,24 +97,31 @@ function App() {
         setRefreshDataTimer={setRefreshDataTimer}
         createAlert={createAlert}
       />
-      <RefreshTimer
-        refreshDataTimer={refreshDataTimer}
-        setRefreshDataTimer={setRefreshDataTimer}
-        autoRefresh={autoRefresh}
-      />
-      <div className="buttons">
-        <SnapshotButton weatherData={weatherData} createAlert={createAlert} />
-        <AutoRefreshButton
-          autoRefresh={autoRefresh}
-          setAutoRefresh={setAutoRefresh}
-          setRefreshDataTimer={setRefreshDataTimer}
-        />
-        <PastSnapshotsButton
-          setPastSnapshots={setPastSnapshots}
-          setOpenModal={setOpenModal}
-          createAlert={createAlert}
-        />
-      </div>
+      {weatherData !== null && (
+        <>
+          <RefreshTimer
+            refreshDataTimer={refreshDataTimer}
+            setRefreshDataTimer={setRefreshDataTimer}
+            autoRefresh={autoRefresh}
+          />
+          <div className="buttons">
+            <SnapshotButton
+              weatherData={weatherData}
+              createAlert={createAlert}
+            />
+            <AutoRefreshButton
+              autoRefresh={autoRefresh}
+              setAutoRefresh={setAutoRefresh}
+              setRefreshDataTimer={setRefreshDataTimer}
+            />
+            <PastSnapshotsButton
+              setPastSnapshots={setPastSnapshots}
+              setOpenModal={setOpenModal}
+              createAlert={createAlert}
+            />
+          </div>
+        </>
+      )}
       <Modal
         open={openModal}
         onClose={handleCloseModal}

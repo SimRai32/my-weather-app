@@ -12,15 +12,11 @@ const PastSnapshotsButton = (props) => {
       const response = await fetch("/api/pastsnapshots").then((res) =>
         res.json()
       );
-      if (!response.pastFiveSnapshots) {
-        const message = "Cannot find past snapshots";
-        createAlert(message, "error");
-      }
       const snapshotsArray = response?.pastFiveSnapshots;
       setPastSnapshots(snapshotsArray);
       if (snapshotsArray.length) setOpenModal(true);
     } catch (error) {
-      const message = `Error saving snapshot: ${error}`;
+      const message = `Cannot fetch past snapshots: ${error}`;
       createAlert(message, "error");
     } finally {
       setLoading(false);
