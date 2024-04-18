@@ -1,12 +1,7 @@
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.App {
+.loading-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }

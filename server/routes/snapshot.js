@@ -1,7 +1,7 @@
 const pastWeatherData = require("../database/weather");
 
 exports.snapshot = (req, res) => {
-  pastWeatherData.push(req?.body?.current);
+  pastWeatherData.push(req.body?.current);
   res.status(201).json({ message: "Snapshot saved" });
 };
 

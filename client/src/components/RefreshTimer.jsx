@@ -11,7 +11,7 @@ const RefreshTimer = (props) => {
       setRefreshDataTimer(newTime);
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [refreshDataTimer, setRefreshDataTimer, autoRefresh]);
+  }, [refreshDataTimer, autoRefresh]);
 
   return (
     <Typography sx={{ fontSize: 35 }}>

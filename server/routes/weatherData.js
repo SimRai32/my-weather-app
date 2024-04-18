@@ -2,13 +2,14 @@ const asyncHandler = require("express-async-handler");
 const { fetchWeatherApi } = require("openmeteo");
 const moment = require("moment/moment");
 const weatherCodes = require("../database/weatherCodes");
+const coordinates = require("../database/coordinates");
 
 exports.weatherdata = asyncHandler(async (req, res) => {
   const currentDate = moment().format("YYYY-MM-DD");
   const pastDate = moment().subtract(5, "days").format("YYYY-MM-DD");
   const params = {
-    latitude: 49.2497,
-    longitude: -123.1193,
+    latitude: coordinates?.lat ?? 49.2497,
+    longitude: coordinates?.long ?? -123.1193,
     current: ["temperature_2m", "weather_code"],
     hourly: "temperature_2m",
     start_date: pastDate,
