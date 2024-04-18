@@ -71,7 +71,7 @@ function App() {
     };
 
     getLocation();
-  }, []);
+  }, [createAlert]);
 
   const handleCloseSnackBar = useCallback(() => {
     clearInterval(intervalRef.current);
